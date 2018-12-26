@@ -20,7 +20,7 @@ spec:
         hostnames:
         - pi.hole
       nodeSelector:
-        hostname: randomstore
+        kubernetes.io/hostname: randomstore
       containers:
       - name: {{ .Chart.Name }}
         image: pihole/pihole:4.0.0-1
