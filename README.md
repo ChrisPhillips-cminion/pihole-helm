@@ -5,7 +5,7 @@
 
 This defaults  the upstraem DNS for 8.8.8.8 and 10.0.0.1 (k8s)
 
-##Values
+## Values
 
 ```
 image:
