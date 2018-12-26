@@ -1,0 +1,79 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: {{ .Chart.Name}}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "fullname" . }}
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+            # hostNetwork: true
+      hostAliases:
+      - ip: 127.0.0.1
+        hostnames:
+        - pi.hole
+      nodeSelector:
+        hostname: randomstore
+      containers:
+      - name: {{ .Chart.Name }}
+        image: pihole/pihole:4.0.0-1
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        stdin: true
+        tty: true
+        resources:
+          limits:
+            memory: 1Gi
+        env:
+        - name: 'ServerIP'
+          value: '0.0.0.0'
+        - name: 'DNS1'
+          value: '8.8.8.8'
+        - name: 'DNS2'
+          value: '10.0.0.10'
+        ports:
+        - name: webui
+          containerPort: 81 
+        - name: dns1
+          hostPort: 53
+          protocol: TCP 
+          containerPort: 53
+        - containerPort: 53
+          name: dns2
+          hostPort: 53
+          protocol: UDP
+
+          # - name: {{ template "fullname" . }}-dns2
+          #   containerPort: 53
+        volumeMounts:
+            - mountPath: "/etc/pihole"
+              name: {{ template "fullname" . }}-pvc
+              subPath: "pihole"
+            - mountPath: "/etc/dnsmasq.d"
+              name: {{ template "fullname" . }}-pvc
+              subPath: "dnsmasq"
+            - mountPath: "/etc/dnsmasq.d/05-custom.conf"
+              name: {{ template "fullname" . }}-custom-config
+              subPath: 05-custom.conf
+            - mountPath: "/etc/pihole/whitelist.txt"
+              name: {{ template "fullname" . }}-custom-config-list
+              subPath: whitelist.txt
+            - mountPath: "/etc/pihole/adlists.list"
+              name: {{ template "fullname" . }}-custom-config-list
+              subPath: adlists.list
+      volumes:
+        - name: {{ template "fullname" . }}-custom-config
+          configMap:
+            name: {{ template "fullname" . }}-custom-config
+        - name: {{ template "fullname" . }}-custom-config-list
+          configMap:
+            name: {{ template "fullname" . }}-custom-config-list
+        - name: {{ template "fullname" . }}-pvc
+          persistentVolumeClaim:
+            claimName: {{ template "fullname" . }}-pvc
