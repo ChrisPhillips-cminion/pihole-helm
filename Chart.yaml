@@ -1,6 +1,6 @@
 apiVersion: v1
 description: Pi Hole
-name: pihole
+name: pihole-helm
 icon: https://i2.wp.com/pi-hole.net/wp-content/uploads/2016/12/Vortex-R.png?resize=300%2C300&ssl=1
 version: 0.0.1
 keywords:
