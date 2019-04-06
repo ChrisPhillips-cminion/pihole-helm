@@ -8,7 +8,7 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -20,7 +20,7 @@ spec:
         - tinyproxy
       containers:
       - name: {{ .Chart.Name }}
-        image: castironclay/tinyproxy_arm:v0.1.0
+        image: castironclay/tinyproxy_arm:v0.1.1
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/opt/docker-tinyproxy/run.sh"]
         stdin: true
