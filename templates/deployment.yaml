@@ -14,15 +14,15 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
-            # hostNetwork: true
       hostAliases:
       - ip: 127.0.0.1
         hostnames:
         - tinyproxy
       containers:
       - name: {{ .Chart.Name }}
-        image: castironclay/tinyproxy_arm:v0.0.1
+        image: castironclay/tinyproxy_arm:v0.1.0
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/opt/docker-tinyproxy/run.sh"]
         stdin: true
         tty: true
         resources:
@@ -37,7 +37,6 @@ spec:
           - '-p'
           - '8888:8888'
           - 'ANY'
-
       volumes:
         - name: {{ template "fullname" . }}-pvc
           persistentVolumeClaim:
