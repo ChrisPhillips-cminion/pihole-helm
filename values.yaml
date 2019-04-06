@@ -12,12 +12,4 @@ persistence:
   ## persistence.accessMode PVC Access Mode
   accessMode: ReadWriteMany
   ## persistence.size PVC Size
-  size: 5Gi
-
-configData: |-
-  server=/local/192.168.1.1
-  address=/.cminion.cf/192.168.1.132
-
-ingress:
-  host: dns.cminion.cf
-
+  size: 20Gi

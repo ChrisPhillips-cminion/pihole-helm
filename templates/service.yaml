@@ -12,9 +12,9 @@ spec:
     app: {{ template "fullname" . }} 
   ports:
   - name:       {{ template "fullname" . }}-dns1
-    port: 53
-    targetPort: 53
-    protocol: UDP
+    port: 888
+    targetPort: 888
+    protocol: TCP
   type: LoadBalancer  
   selector:
     app: {{ template "fullname" . }}
