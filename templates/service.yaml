@@ -11,10 +11,20 @@ spec:
   selector:
     app: {{ template "fullname" . }} 
   ports:
+  - name: {{ template "fullname" . }}-webui
+    port: 81
+    targetPort: 80
+    protocol:   TCP
   - name:       {{ template "fullname" . }}-dns1
-    port: 8888
-    targetPort: 8888
-    protocol: TCP
-  type: LoadBalancer  
+    port: 53
+    targetPort: 53
+    protocol:   TCP
+  - name:       {{ template "fullname" . }}-dns2
+    port:       53
+    targetPort: 53
+    protocol:   UDP
+  externalIPs:
+  - 192.168.1.16
+  - 192.168.1.132
   selector:
     app: {{ template "fullname" . }}
